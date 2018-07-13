@@ -1,10 +1,8 @@
-package com.cbl.money.api.event;
+ package com.cbl.money.api.event;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationEvent;
-
-import lombok.Data;
 
 public class RecursoCriadoEvent extends ApplicationEvent{
 
