@@ -1,0 +1,75 @@
+<div class="container">
+
+  <form #formulario ="ngForm" autocomplete="off">
+    <div class="ui-g">
+      <div class="ui-g-12">
+        <h1>Nova Pessoa</h1>
+      </div>
+
+      <div class="ui-g-12 ui-fluid">
+        <label>Nome*</label>
+        <input pInputText type="text" name="nome" ngModel #nome="ngModel" required minlength="8" />
+        <div *ngIf="nome.hasError('required') && nome.touched" class="ui-message ui-messages-error">
+          Informe o nome
+        </div>
+        <div *ngIf="nome.hasError('minlength') && nome.dirty" class="ui-message ui-messages-error" >
+          Mínimo de {{nome.errors.minlength.requiredLength}} caracteres. Você digitou apenas {{nome.errors.minlength.actualLength}}
+        </div>
+      </div>
+
+      <div class="ui-g-12 ui-md-9 ui-fluid">
+        <label>Logradouro*</label>
+        <input pInputText type="text" name="logradouro" required ngModel #logradouro="ngModel" minlength="10" />
+        <div *ngIf="logradouro.hasError('required') && logradouro.touched" class="ui-message ui-messages-error">
+          Informe um logradouro
+        </div>
+        <div *ngIf="logradouro.hasError('minlength') && logradouro.dirty" class="ui-message ui-messages-error">
+          Mínimo de {{logradouro.errors.minlength.requiredLength}} caracteres.
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-3 ui-fluid">
+        <label>Número*</label>
+        <input pInputText type="text" name = "numero" required ngModel #numero = "ngModel"/>
+        <div *ngIf="numero.hasError('required') && numero.touched" class="ui-message ui-messages-error">
+          Informe o número.
+        </div>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Complemento</label>
+        <input pInputText type="text" />
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>Bairro*</label>
+        <input pInputText type="text" required name = "bairro" #bairro = "ngModel" ngModel/>
+        <div *ngIf="bairro.hasError('required') && bairro.touched" class = "ui-message ui-messages-error">Informe o Bairro</div>
+      </div>
+
+      <div class="ui-g-12 ui-md-4 ui-fluid">
+        <label>CEP*</label>
+        <p-inputMask mask="99.999-999" required name = "cep" #cep="ngModel" ngModel></p-inputMask>
+        <div *ngIf="cep.hasError('required') && bairro.touched" class = "ui-message ui-messages-error">Informe o CEP</div>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Estado*</label>
+        <input pInputText type="text" required name = "estado" #estado = "ngModel" ngModel/>
+        <div *ngIf="estado.hasError('required') && estado.touched" class = "ui-message ui-messages-error">Selecione um Estado</div>
+      </div>
+
+      <div class="ui-g-12 ui-md-6 ui-fluid">
+        <label>Cidade*</label>
+        <input pInputText type="text" required name = "cidade" #cidade = "ngModel" ngModel/>
+        <div *ngIf="cidade.hasError('required') && cidade.touched" class = "ui-message ui-messages-error">Selecione uma Cidade</div>
+      </div>
+
+      <div class="ui-g-12">
+        <button pButton label="Salvar" type="submit" style="margin-right: 5px" [disabled]=formulario.invalid></button>
+        <button pButton label="Novo" class="ui-button-info" style="margin-right: 5px"></button>
+        <a href="javascript:;">Voltar para a pesquisa</a>
+      </div>
+    </div>
+  </form>
+
+</div>
