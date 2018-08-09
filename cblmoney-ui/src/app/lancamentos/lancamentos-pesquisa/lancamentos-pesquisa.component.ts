@@ -1,26 +1,80 @@
-import { Component, OnInit } from '@angular/core';
+import { ConfirmationService } from 'primeng/components/common/confirmationservice';
+import { LancamentoService, LancamentoFiltro } from './../lancamento.service';
+import { Component, OnInit, ViewChild, AfterContentInit } from '@angular/core';
+import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
+import { ToastyService } from 'ng2-toasty';
+import { ErrorHandlerService } from '../../core/error-handler.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lancamentos-pesquisa',
   templateUrl: './lancamentos-pesquisa.component.html',
   styleUrls: ['./lancamentos-pesquisa.component.css']
 })
-export class LancamentosPesquisaComponent {
+export class LancamentosPesquisaComponent implements OnInit, AfterContentInit {
 
-  lancamentos = [
-    { tipo: 'DESPESA', descricao: 'Compra de pão', dataVencimento: new Date(2017, 5, 30),
-      dataPagamento: null, valor: 4.55, pessoa: 'Padaria do José' },
-    { tipo: 'RECEITA', descricao: 'Venda de software', dataVencimento: new Date(2017, 5, 10),
-      dataPagamento: new Date(2017, 5, 30), valor: 80000, pessoa: 'Atacado Brasil' },
-    { tipo: 'DESPESA', descricao: 'Impostos', dataVencimento: new Date(2017, 6, 20),
-      dataPagamento: null, valor: 14312, pessoa: 'Ministério da Fazenda' },
-    { tipo: 'DESPESA', descricao: 'Mensalidade de escola', dataVencimento: new Date(2017, 5, 5),
-      dataPagamento: new Date(2017, 4, 30), valor: 800, pessoa: 'Escola Abelha Rainha' },
-    { tipo: 'RECEITA', descricao: 'Venda de carro', dataVencimento: new Date(2017, 7, 18),
-      dataPagamento: null, valor: 55000, pessoa: 'Sebastião Souza' },
-    { tipo: 'DESPESA', descricao: 'Aluguel', dataVencimento: new Date(2017, 6, 10),
-      dataPagamento: new Date(2017, 6, 9), valor: 1750, pessoa: 'Casa Nova Imóveis' },
-    { tipo: 'DESPESA', descricao: 'Mensalidade musculação', dataVencimento: new Date(2017, 6, 13),
-      dataPagamento: null, valor: 180, pessoa: 'Academia Top' }
-  ];
+  filtro = new LancamentoFiltro();
+  lancamentos = [];
+  totalRegistros = 0;
+  loading: boolean;
+
+  @ViewChild('tabela') tabela;
+  constructor(
+    private lancamentoService: LancamentoService,
+    private toastyService: ToastyService,
+    private confirmationService: ConfirmationService,
+    private errorHandler: ErrorHandlerService,
+    private title: Title
+  ) { }
+
+  ngOnInit() {
+    this.title.setTitle('Pesquisa de Lançamentos');
+  }
+  ngAfterContentInit() {
+    this.loading = true;
+  }
+
+  pesquisar(pagina = 0) {
+    this.loading = true;
+
+    this.filtro.pagina = pagina;
+
+    this.lancamentoService.pesquisar(this.filtro)
+      .then(resultado => {
+        this.lancamentos = resultado.lancamentos;
+        this.totalRegistros = resultado.total;
+        this.loading = false;
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+  }
+
+  excluir(lancamento: any) {
+
+
+    this.lancamentoService.excluir(lancamento.codigo)
+      .then(() => {
+
+        this.tabela.first === 0 ? this.pesquisar() : this.tabela.first = 0;
+        this.toastyService.success('Lançamento excluído com sucesso');
+
+      })
+      .catch(erro => this.errorHandler.handle(erro));
+
+  }
+
+  confirmarExclusao(lancamento: any) {
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir?',
+      accept: () => {
+        this.excluir(lancamento);
+
+      }
+    });
+  }
+
+  aoMudarPagina(event: LazyLoadEvent) {
+
+    const pagina = event.first / event.rows;
+    this.pesquisar(pagina);
+  }
 }
