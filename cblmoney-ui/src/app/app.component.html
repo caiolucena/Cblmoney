@@ -1,5 +1,20 @@
 <app-navbar></app-navbar>
+<<<<<<< HEAD
 <!--<app-lancamentos-pesquisa></app-lancamentos-pesquisa>-->
 <app-pessoas-pesquisa></app-pessoas-pesquisa> 
 <!--<app-lancamento-cadastro></app-lancamento-cadastro>-->
 <!--<app-pessoa-cadastro></app-pessoa-cadastro>-->
+=======
+
+<router-outlet></router-outlet>
+
+
+<ng2-toasty></ng2-toasty>
+
+<p-confirmDialog header="Confirmação" icon ="fa fa-question-circle" #confirmacao>
+  <p-footer>
+    <button type = "button" pButton icon="fa fa-check" label ="Sim" (click)="confirmacao.accept()"></button>
+    <button type = "button" pButton icon="fa fa-times" label ="Não" (click)="confirmacao.reject()"></button>
+  </p-footer>
+</p-confirmDialog>
+>>>>>>> 6a745a68ace4246b9d85fec7ed5e5f0a29e2d4fa
