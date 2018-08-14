@@ -1,3 +1,4 @@
+import { AuthService } from './../../seguranca/auth.service';
 import { ErrorHandlerService } from './../../core/error-handler.service';
 import { ToastyService } from 'ng2-toasty';
 import { LazyLoadEvent } from 'primeng/components/common/lazyloadevent';
@@ -25,7 +26,8 @@ export class PessoasPesquisaComponent implements OnInit, AfterContentInit {
     private toastyService: ToastyService,
     private confirmationService: ConfirmationService,
     private errorHandler: ErrorHandlerService,
-    private title: Title) { }
+    private title: Title,
+    private auth: AuthService) { }
 
   ngOnInit() {
     this.title.setTitle('Pesquisa de Pessoas');
